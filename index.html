@@ -233,6 +233,37 @@
     }
     .project-link:hover { border-color: var(--accent); }
 
+    .project-gallery {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .project-gallery figure {
+      margin: 0;
+      flex: 1;
+      min-width: 180px;
+    }
+    .project-gallery img {
+      width: 100%;
+      border-radius: 2px;
+      border: 1px solid var(--border);
+      display: block;
+    }
+    .project-gallery img.invert {
+      filter: invert(1) hue-rotate(180deg);
+      opacity: 0.88;
+    }
+    .project-gallery figcaption {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-top: 0.35rem;
+      text-align: center;
+    }
+
     .skills-group { margin-bottom: 1.5rem; }
     .skills-group-label {
       font-size: 0.75rem;
@@ -376,7 +407,13 @@
         <li>Implemented Black-Scholes pricing for European calls and puts with full Greeks (Delta, Gamma, Vega), and a Newton-Raphson solver to extract implied volatility from market mid-prices.</li>
         <li>Calibrated and visualised the implied volatility surface across all listed maturities using griddata interpolation; recovered the expected skew structure on SPX and AAPL option chains.</li>
       </ul>
-      <a class="project-link" href="https://github.com/totom38" target="_blank">VIEW ON GITHUB →</a>
+      <a class="project-link" href="https://github.com/teaum" target="_blank">VIEW ON GITHUB →</a>
+      <div class="project-gallery">
+        <figure>
+          <img src="vol_surface.png" alt="Implied volatility surface AAPL">
+          <figcaption>Implied vol surface — AAPL</figcaption>
+        </figure>
+      </div>
     </div>
 
     <div class="project-item">
@@ -392,6 +429,16 @@
         <li>Led the historical calibration: derived analytic covariances of rolling futures under a Nelson–Siegel (Level–Slope–Curvature) parametrisation, reformulated as a linear conic programme (CVXPY) for fixed time-scale parameters within a nested optimisation loop.</li>
         <li>Calibrated on 494 days of EEX Phelix-DE futures; achieved median covariance error of 3.4%, recovering the Samuelson effect from M1 (62%/yr) to Cal1 (6.7%/yr).</li>
       </ul>
+      <div class="project-gallery">
+        <figure>
+          <img src="prix_historiques.png" alt="EEX power futures price series" class="invert">
+          <figcaption>EEX futures — price series &amp; log-returns</figcaption>
+        </figure>
+        <figure>
+          <img src="correlation_matrix.png" alt="Calibrated correlation matrix" class="invert">
+          <figcaption>Calibrated correlation matrix R̂</figcaption>
+        </figure>
+      </div>
     </div>
 
   </section>
