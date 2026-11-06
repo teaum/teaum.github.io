@@ -385,8 +385,9 @@
     <p class="hero-eyebrow">Engineering Student · Paris</p>
     <h1>Tom Mallay<br><em>Quantitative Finance &amp; Engineering</em></h1>
     <p class="hero-bio">
-      Engineering student at ENSIIE with a double degree in Mathematics at Paris-Saclay University.
-      Exchange semester at the Università degli Studi di Firenze focused on quantitative finance.
+      Engineering student at ENSIIE with a double degree in Mathematics at Paris-Saclay University
+      (L3 Mathematics, M1 Applied Mathematics). Exchange semester at the Università degli Studi di Firenze
+      focused on quantitative finance. Currently Analyst Intern at AUREA Wealth Management.
       Passionate about trading, blockchain technology and data-driven methods applied to finance.
     </p>
   </div>
@@ -397,17 +398,33 @@
     <div class="project-item">
       <div class="project-header">
         <div>
+          <div class="project-title">Cross-Asset Trend Index — Systematic Strategy Backtest</div>
+          <div class="project-stack">Python · Pandas · yfinance · Matplotlib</div>
+        </div>
+        <div class="project-date">2026 · in progress</div>
+      </div>
+      <ul class="project-bullets">
+        <li>Designing a rules-based QIS index applying time-series momentum (long/flat) to 8 ETFs across equities, government bonds, credit, gold and commodities.</li>
+        <li>Built the full pipeline: dividend-adjusted data snapshot and quality checks, monthly 12-month momentum signal, execution lag to avoid look-ahead bias, daily index level from base 100.</li>
+        <li>Benchmarked against an always-invested equal-weight portfolio to isolate the value of the signal; computing annualised return, volatility, Sharpe, max drawdown and Calmar.</li>
+      </ul>
+      <a class="project-link" href="https://github.com/teaum/qis-cross-asset-trend" target="_blank">VIEW ON GITHUB →</a>
+    </div>
+
+    <div class="project-item">
+      <div class="project-header">
+        <div>
           <div class="project-title">Black-Scholes Options Pricer &amp; Implied Volatility Surface</div>
           <div class="project-stack">Python · NumPy · SciPy · yfinance · Matplotlib</div>
         </div>
-        <div class="project-date">2025</div>
+        <div class="project-date">2026</div>
       </div>
       <ul class="project-bullets">
         <li>Built an interactive CLI pricer fetching live market data via yfinance for any equity ticker, automatically selecting the nearest listed expiry and strike.</li>
-        <li>Implemented Black-Scholes pricing for European calls and puts with full Greeks (Delta, Gamma, Vega), and a Newton-Raphson solver to extract implied volatility from market mid-prices.</li>
+        <li>Implemented Black-Scholes pricing for European calls and puts with full Greeks (Delta, Gamma, Vega, Theta, Rho), and a Newton-Raphson solver to extract implied volatility from market mid-prices.</li>
         <li>Calibrated and visualised the implied volatility surface across all listed maturities using griddata interpolation; recovered the expected skew structure on SPX and AAPL option chains.</li>
       </ul>
-      <a class="project-link" href="https://github.com/teaum" target="_blank">VIEW ON GITHUB →</a>
+      <a class="project-link" href="https://github.com/teaum/BS_pricer" target="_blank">VIEW ON GITHUB →</a>
     </div>
 
     <div class="project-item">
@@ -416,12 +433,13 @@
           <div class="project-title">HJM–Lifted Heston for Energy Markets — Historical Calibration</div>
           <div class="project-stack">Python · NumPy · SciPy · CVXPY · EEX Data</div>
         </div>
-        <div class="project-date">2025 – 2026</div>
+        <div class="project-date">2026</div>
       </div>
       <ul class="project-bullets">
         <li>M1 research project (ENSIIE / Paris-Saclay, supervised by Prof. Sergio Pulido) on the HJM–Lifted Heston model for energy markets, following Abi Jaber et al. (2025).</li>
-        <li>Led the historical calibration: derived analytic covariances of rolling futures under a Nelson–Siegel (Level–Slope–Curvature) parametrisation, reformulated as a linear conic programme (CVXPY) for fixed time-scale parameters within a nested optimisation loop.</li>
-        <li>Calibrated on 494 days of EEX Phelix-DE futures; achieved median covariance error of 3.4%, recovering the Samuelson effect from M1 (62%/yr) to Cal1 (6.7%/yr).</li>
+        <li>Led the historical calibration: derived analytic covariances of rolling futures log-returns under a Nelson–Siegel (Level–Slope–Curvature) multifactor volatility parametrisation, reformulated as a linear conic programme (SDP + SOCP) solved via CVXPY.</li>
+        <li>Calibrated a 1L-1S-1C model on 494 days of EEX Phelix-DE power futures; achieved median covariance error of 3.4%, recovering the Samuelson effect from M1 (62%/yr) to Cal1 (6.7%/yr).</li>
+        <li>Extended the model with a jump component in instantaneous forward dynamics; derived the Riccati system preserving the affine exponential transform structure on the Kemna–Vorst geometric proxy.</li>
       </ul>
       <div class="project-gallery">
         <figure style="flex:2;">
@@ -443,16 +461,31 @@
     <div class="exp-item">
       <div class="exp-header">
         <div>
+          <div class="exp-title">Analyst Intern</div>
+          <div class="exp-company">AUREA Wealth Management · Paris, France</div>
+        </div>
+        <div class="exp-date">Sept. 2026 – Feb. 2027</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Built a fund look-through analytics tool computing geographic and sector exposures of client life insurance portfolios (FR/LUX contracts); monthly data refresh and automated charting for client presentations</li>
+        <li>Automating the generation of client presentations from portfolio data (Python), replacing manual reporting</li>
+        <li>Developing analytics tools to assess client investment proposals: risk/return profile, diversification and cost impact</li>
+        <li>Supported portfolio reviews and asset allocation analysis across life insurance, SCPI and securities accounts</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-header">
+        <div>
           <div class="exp-title">Asset Management Intern</div>
           <div class="exp-company">Banque Populaire · Nantes, France</div>
         </div>
         <div class="exp-date">May – Jul. 2025</div>
       </div>
       <ul class="exp-bullets">
-        <li>Developed VBA code to calculate 16 Principal Adverse Impacts (PAI) for annual and quarterly ESG reporting</li>
-        <li>Managed differentiated workflows for OPC, individual securities and life insurance portfolios</li>
-        <li>Implemented algorithms for performance tracking and position monitoring</li>
-        <li>Additional experience as sales assistant in the trading room (€4M in revenue)</li>
+        <li>Developed VBA tools to compute 16 Principal Adverse Impacts (PAI) for ESG reporting across equity, fund and life insurance portfolios; automated quarterly and annual workflows</li>
+        <li>Built Python/VBA algorithms for performance attribution, position monitoring and NAV reconciliation</li>
+        <li>Participated in trading room activity as sales assistant (€4M in revenue)</li>
       </ul>
     </div>
 
@@ -478,10 +511,10 @@
     <div class="edu-item">
       <div class="edu-degree">Master's Degree in Engineering — ENSIIE</div>
       <div class="edu-school">École Nationale Supérieure d'Informatique pour l'Industrie et l'Entreprise</div>
-      <div class="edu-date">2024 – 2027 · Évry, France</div>
+      <div class="edu-date">2024 – 2028 · Évry, France</div>
       <ul class="edu-bullets">
-        <li>Double degree in Mathematics, Paris-Saclay University (June 2025)</li>
-        <li>Probability, topology, finance, statistics, quantitative finance, portfolio theory, derivatives</li>
+        <li>Double degree with Université Paris-Saclay: L3 Mathematics (June 2025) and M1 Applied Mathematics (2026)</li>
+        <li>Quantitative Finance, Stochastic Calculus, Derivatives Pricing, Fixed Income, Portfolio Theory, Statistics, Probability, C, Python</li>
       </ul>
     </div>
 
@@ -528,8 +561,25 @@
         <span class="chip">Pandas</span>
         <span class="chip">NumPy</span>
         <span class="chip">SciPy</span>
+        <span class="chip">CVXPY</span>
         <span class="chip">Matplotlib</span>
         <span class="chip">yfinance</span>
+      </div>
+    </div>
+
+    <div class="skills-group">
+      <div class="skills-group-label">Quantitative</div>
+      <div class="skills-chips">
+        <span class="chip">Black-Scholes</span>
+        <span class="chip">Greeks</span>
+        <span class="chip">Implied Volatility</span>
+        <span class="chip">Stochastic Calculus</span>
+        <span class="chip">HJM</span>
+        <span class="chip">Monte Carlo</span>
+        <span class="chip">Numerical Methods (FD/FE)</span>
+        <span class="chip">Optimization</span>
+        <span class="chip">Factor Models</span>
+        <span class="chip">Fixed Income</span>
       </div>
     </div>
 
@@ -538,6 +588,7 @@
       <div class="skills-chips">
         <span class="chip">French — Native</span>
         <span class="chip">English — Fluent</span>
+        <span class="chip">Italian — Intermediate</span>
       </div>
     </div>
   </section>
@@ -547,17 +598,22 @@
 
     <div class="interest-item">
       <div class="interest-title">Blockchain &amp; Crypto</div>
-      <div class="interest-desc">Investing in cryptocurrencies (Bitcoin, Solana, ASI…) via a decentralized wallet; studying blockchain technology with the Kryptosphere association.</div>
+      <div class="interest-desc">DeFi investing (Bitcoin, Solana); member of the Kryptosphere association.</div>
     </div>
 
     <div class="interest-item">
       <div class="interest-title">Personal Trading</div>
-      <div class="interest-desc">Trading across multiple asset classes — indices, forex, crypto, metals; spot and futures.</div>
+      <div class="interest-desc">Active trader across equities, indices, forex, crypto and commodity futures (spot &amp; derivatives); personal portfolio for long-term investment.</div>
     </div>
 
     <div class="interest-item">
       <div class="interest-title">FinancIIE — Finance Association</div>
-      <div class="interest-desc">Interviewing financial professionals covering many aspects of the industry.</div>
+      <div class="interest-desc">Finance association at ENSIIE, interviewing practitioners across sell-side, buy-side and market risk.</div>
+    </div>
+
+    <div class="interest-item">
+      <div class="interest-title">Poker</div>
+      <div class="interest-desc">Regular player; trained in probabilistic reasoning, expected value maximisation and risk/reward decision-making under uncertainty.</div>
     </div>
 
     <div class="interest-item">
@@ -567,7 +623,7 @@
 
     <div class="interest-item">
       <div class="interest-title">Sports</div>
-      <div class="interest-desc">Handball (12 years), BMX Race (8 years), Running (5 years).</div>
+      <div class="interest-desc">Road cycling, Handball (12 years), BMX Race (8 years), Running (5 years).</div>
     </div>
 
   </section>
@@ -576,7 +632,7 @@
 
 <div class="container">
   <footer>
-    <span>© 2025 Tom Mallay. All rights reserved.</span>
+    <span>© 2026 Tom Mallay. All rights reserved.</span>
     <div class="footer-links">
       <a href="https://linkedin.com/in/tom-mallay-7009052aa" target="_blank">LinkedIn</a>
       <a href="https://github.com/teaum" target="_blank">GitHub</a>
