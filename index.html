@@ -91,7 +91,7 @@
       justify-content: space-between;
       padding: 0 2.5rem;
       height: 56px;
-      animation: navIn 0.9s var(--ease-out) both;
+      animation: navIn 0.9s var(--ease-out) 0.7s both;
     }
     @keyframes navIn {
       from { opacity: 0; transform: translateY(-100%); }
@@ -139,22 +139,14 @@
       padding: 0 1.5rem 6rem;
     }
 
-    /* ---------- Hero ---------- */
+    /* ---------- Cover (hero) ---------- */
     .hero {
       position: relative;
-      min-height: min(92vh, 860px);
+      min-height: calc(100svh - 56px);
       display: flex;
-      align-items: center;
-      overflow: hidden;
       border-bottom: 1px solid var(--border);
+      overflow: hidden;
       isolation: isolate;
-    }
-    #paths {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
     }
     .hero::before {
       content: '';
@@ -163,22 +155,72 @@
       z-index: -1;
       pointer-events: none;
       background:
-        linear-gradient(90deg, rgba(15,15,15,0.9) 0%, rgba(15,15,15,0.55) 40%, rgba(15,15,15,0) 85%),
-        linear-gradient(to bottom, rgba(15,15,15,0) 65%, var(--bg) 100%);
+        radial-gradient(900px 520px at 78% 42%, rgba(200,169,110,0.07), transparent 62%),
+        radial-gradient(700px 480px at 6% 105%, rgba(74,124,111,0.08), transparent 60%);
+      animation: fadeIn 2.2s ease 0.3s both;
     }
-    .hero-glow {
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      background: radial-gradient(520px circle at var(--hx, 70%) var(--hy, 40%), rgba(200,169,110,0.07), transparent 65%);
-    }
-    .hero-inner {
-      position: relative;
+    .cover {
+      flex: 1;
       width: 100%;
-      max-width: 780px;
+      max-width: 1240px;
       margin: 0 auto;
-      padding: 6.5rem 1.5rem 5.5rem;
+      padding: 1.4rem 2.5rem 1.4rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      grid-template-rows: auto 1fr auto;
+      column-gap: 4rem;
+    }
+
+    /* Top and bottom running heads, like a printed cover */
+    .cover-top, .cover-bottom {
+      grid-column: 1 / -1;
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.64rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .cover-top { padding-bottom: 1rem; }
+    .cover-bottom { padding-top: 1rem; }
+    .cover-top > *, .cover-bottom > * { animation: fadeIn 1s ease both; }
+    .cover-top > * { animation-delay: 0.5s; }
+    .cover-bottom > * { animation-delay: 1.5s; }
+    .cover-top::after, .cover-bottom::before {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      height: 1px;
+      background: var(--border);
+      animation: drawX 1.4s var(--ease-in-out) 0.1s both;
+    }
+    .cover-top::after { bottom: 0; transform-origin: left; }
+    .cover-bottom::before { top: 0; transform-origin: right; animation-delay: 0.35s; }
+    @keyframes drawX { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    .cover-top .accent, .cover-bottom .accent { color: var(--accent); }
+    .live {
+      display: inline-block;
+      width: 6px; height: 6px;
+      margin-right: 0.55rem;
+      border-radius: 50%;
+      background: var(--accent2);
+      vertical-align: 0.05em;
+      box-shadow: 0 0 0 0 rgba(74,124,111,0.6);
+      animation: livePing 2.4s var(--ease-out) infinite;
+    }
+    @keyframes livePing {
+      0%   { box-shadow: 0 0 0 0 rgba(74,124,111,0.55); }
+      70%  { box-shadow: 0 0 0 7px rgba(74,124,111,0); }
+      100% { box-shadow: 0 0 0 0 rgba(74,124,111,0); }
+    }
+
+    .cover-text {
+      align-self: center;
+      padding: 2.5rem 0;
     }
     .hero-eyebrow {
       font-family: 'DM Mono', monospace;
@@ -186,7 +228,7 @@
       color: var(--accent);
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      margin-bottom: 1.4rem;
+      margin-bottom: 1.6rem;
       min-height: 1.3em;
       white-space: nowrap;
       animation: fadeIn 0.8s var(--ease-out) 0.2s both;
@@ -202,27 +244,47 @@
     }
     @keyframes blink { 50% { opacity: 0; } }
 
+    /* Name: letters rise one by one */
     .hero h1 {
       font-family: 'DM Serif Display', serif;
-      font-size: clamp(2.6rem, 7.2vw, 4.4rem);
+      font-size: clamp(3.6rem, 8.6vw, 8rem);
       font-weight: 400;
-      line-height: 1.06;
-      margin-bottom: 1.8rem;
+      line-height: 0.9;
+      letter-spacing: -0.01em;
       color: var(--text);
+      margin-bottom: 1.6rem;
     }
     .hero h1 .line {
       display: block;
       overflow: hidden;
-      padding: 0 0.12em 0.1em 0;
+      padding: 0.04em 0.06em 0.14em 0;
+      margin-bottom: -0.1em;
     }
-    .hero h1 .line > span {
-      display: inline-block;
-      transform: translateY(105%);
-      animation: rise 1.1s var(--ease-out) forwards;
+    .hero h1 .line:nth-child(2) { padding-left: 0.62em; }
+    .hero h1 .ch { display: inline-block; }
+    .js .hero h1 { visibility: hidden; }
+    .js .hero h1.split { visibility: visible; }
+    .js .hero h1.split .ch {
+      transform: translateY(115%) rotate(7deg);
+      transform-origin: 0 100%;
+      animation: rise 1.15s var(--ease-out) forwards;
+      animation-delay: calc(0.25s + var(--i) * 55ms);
     }
-    .hero h1 .line:nth-child(2) > span { animation-delay: 0.12s; }
-    @keyframes rise { to { transform: translateY(0); } }
-    .hero h1 em {
+    @keyframes rise { to { transform: translateY(0) rotate(0); } }
+
+    .cover-sub {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.3rem, 2.3vw, 1.85rem);
+      line-height: 1.25;
+      color: var(--muted);
+      margin-bottom: 1.3rem;
+    }
+    .js .cover-sub {
+      clip-path: inset(0 100% 0 0);
+      animation: wipe 1.2s var(--ease-in-out) 0.85s forwards;
+    }
+    @keyframes wipe { to { clip-path: inset(0 0 0 0); } }
+    .cover-sub em {
       font-style: italic;
       color: var(--accent);
       background: linear-gradient(100deg, var(--accent) 0%, var(--accent) 40%, var(--accent-hi) 50%, var(--accent) 60%, var(--accent) 100%);
@@ -230,26 +292,25 @@
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: shimmer 7s linear 1.4s infinite;
+      animation: shimmer 7s linear 2.2s infinite;
     }
     @keyframes shimmer {
       from { background-position: 100% 0; }
       to   { background-position: -150% 0; }
     }
-
-    .hero-bio {
+    .cover-lede {
       font-size: 1rem;
       color: var(--muted);
-      max-width: 580px;
-      line-height: 1.75;
-      animation: fadeUp 0.9s var(--ease-out) 0.45s both;
+      max-width: 440px;
+      line-height: 1.7;
+      animation: fadeUp 0.9s var(--ease-out) 1.15s both;
     }
     .hero-cta {
       display: flex;
       flex-wrap: wrap;
       gap: 0.75rem;
-      margin-top: 2.2rem;
-      animation: fadeUp 0.9s var(--ease-out) 0.6s both;
+      margin-top: 2rem;
+      animation: fadeUp 0.9s var(--ease-out) 1.3s both;
     }
     .btn {
       display: inline-flex;
@@ -278,62 +339,110 @@
       .btn:hover .arrow.out { transform: translate(2px, -2px); }
     }
 
-    .hero-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: 3.2rem;
-      padding-top: 1.6rem;
-      border-top: 1px solid var(--border);
-      max-width: 620px;
-      animation: fadeUp 0.9s var(--ease-out) 0.75s both;
-    }
-    .stat-num {
-      font-family: 'DM Serif Display', serif;
-      font-size: 2.1rem;
-      line-height: 1;
-      color: var(--text);
-      font-variant-numeric: tabular-nums;
-    }
-    .stat-num .unit { color: var(--accent); }
-    .stat-label {
-      margin-top: 0.5rem;
+    /* Monte Carlo panel */
+    .cover-plot {
+      position: relative;
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      margin: 2.2rem 0;
       font-family: 'DM Mono', monospace;
       font-size: 0.64rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      letter-spacing: 0.08em;
       color: var(--muted);
-      line-height: 1.5;
     }
-
-    .scroll-cue {
-      position: absolute;
-      left: 50%;
-      bottom: 1.6rem;
-      transform: translateX(-50%);
-      width: 1px;
-      height: 44px;
-      background: var(--border);
-      overflow: hidden;
-      animation: fadeIn 1s ease 1.4s both;
-    }
-    .scroll-cue::after {
+    .cover-plot::before, .cover-plot::after {
       content: '';
       position: absolute;
-      left: 0; top: 0;
-      width: 1px; height: 100%;
-      background: linear-gradient(to bottom, transparent, var(--accent));
-      animation: drip 2.2s var(--ease-in-out) infinite;
+      width: 12px; height: 12px;
+      border-color: var(--accent);
+      border-style: solid;
+      opacity: 0.7;
+      animation: fadeIn 0.8s ease 0.6s both;
     }
-    @keyframes drip {
-      from { transform: translateY(-100%); }
-      to   { transform: translateY(100%); }
+    .cover-plot::before { top: -10px; left: -14px; border-width: 1px 0 0 1px; }
+    .cover-plot::after  { bottom: -10px; right: -14px; border-width: 0 1px 1px 0; }
+    .plot-head, .plot-foot {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.4rem 1.2rem;
+      text-transform: uppercase;
+    }
+    .plot-head { padding-bottom: 0.9rem; animation: fadeIn 0.9s ease 0.55s both; }
+    .plot-foot {
+      padding-top: 0.9rem;
+      border-top: 1px solid var(--border);
+      justify-content: flex-start;
+      gap: 0.4rem 1.8rem;
+      animation: fadeUp 0.9s var(--ease-out) 1.6s both;
+    }
+    .plot-head .title { color: var(--text); letter-spacing: 0.14em; }
+    #mcParams { text-transform: none; letter-spacing: 0.04em; }
+    .plot-foot b {
+      font-weight: 500;
+      color: var(--accent-hi);
+      margin-left: 0.45rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .plot-foot sub { font-size: 0.75em; vertical-align: -0.2em; text-transform: none; }
+    .plot-canvas { position: relative; flex: 1; min-height: 300px; }
+    #paths { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+    .cover-scroll {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .cover-scroll .track {
+      position: relative;
+      width: 44px; height: 1px;
+      background: var(--border);
+      overflow: hidden;
+    }
+    .cover-scroll .track::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, var(--accent));
+      animation: dripX 2.2s var(--ease-in-out) infinite;
+    }
+    @keyframes dripX {
+      from { transform: translateX(-100%); }
+      to   { transform: translateX(100%); }
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .cover-scroll:hover { color: var(--accent); }
     }
 
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: none; }
+    }
+
+    /* About */
+    .about-lede {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.35rem, 2.6vw, 1.7rem);
+      line-height: 1.4;
+      color: var(--text);
+      margin-bottom: 1.2rem;
+    }
+    .about-lede em { font-style: italic; color: var(--accent); }
+    .about-body { color: var(--muted); max-width: 640px; }
+
+    /* Stack the cover below desktop widths */
+    @media (max-width: 900px) {
+      .cover { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto auto auto; }
+      .cover-text { padding: 2.6rem 0 0.5rem; }
+      .cover-plot { margin: 2rem 0 1.6rem; }
+      .plot-canvas { min-height: 270px; }
+      .cover-plot::before { left: -6px; }
+      .cover-plot::after { right: -6px; }
     }
 
     /* ---------- Ticker ---------- */
@@ -882,13 +991,13 @@
       .nav-links { gap: 0.95rem; }
       .nav-links a { font-size: 0.66rem; letter-spacing: 0.05em; }
       .container { padding-left: 1rem; padding-right: 1rem; }
-      .hero { min-height: 0; }
-      .hero-inner { padding: 4.5rem 1rem 4.5rem; }
+      .cover { padding: 1rem 1rem 1.1rem; }
+      .cover-top, .cover-bottom { font-size: 0.58rem; letter-spacing: 0.12em; }
+      .cover-text { padding-top: 2.2rem; }
       .hero-eyebrow { font-size: 0.66rem; letter-spacing: 0.1em; }
-      .hero-stats { gap: 0.9rem; }
-      .stat-num { font-size: 1.6rem; }
-      .stat-label { font-size: 0.58rem; }
-      .scroll-cue { display: none; }
+      .hero h1 { font-size: 4.3rem; }
+      .plot-canvas { min-height: 240px; }
+      .plot-foot { gap: 0.4rem 1.1rem; }
       main.container { padding-top: 3.5rem; }
       .project-item { padding: 1.3rem 1.15rem; }
       .timeline { padding-left: 1.5rem; }
@@ -898,10 +1007,12 @@
     /* ---------- Reduced motion: keep fades, drop movement ---------- */
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      nav, .hero-bio, .hero-cta, .hero-stats { animation-name: fadeIn; }
-      .hero h1 .line > span { transform: none; animation: fadeIn 0.6s ease both; }
-      .hero h1 em { animation: none; }
-      .ticker-track, .scroll-cue::after, .dot::after, .exp-item.current .pulse, .caret { animation: none; }
+      nav, .cover-lede, .hero-cta, .plot-foot { animation-name: fadeIn; }
+      .js .hero h1.split .ch { transform: none; animation: fadeIn 0.6s ease both; animation-delay: calc(var(--i) * 40ms); }
+      .js .cover-sub { clip-path: none; animation: fadeIn 0.8s ease 0.4s both; }
+      .cover-top::after, .cover-bottom::before { animation: none; }
+      .cover-sub em { animation: none; }
+      .ticker-track, .cover-scroll .track::after, .live, .dot::after, .exp-item.current .pulse, .caret { animation: none; }
       .js .reveal { transform: none; }
       .js .skills-group .chip { transform: none; }
       .js .project-item.done:hover, html:not(.js) .project-item:hover { transform: none; }
@@ -923,47 +1034,48 @@
 </nav>
 
 <header class="hero" id="top">
-  <canvas id="paths" aria-hidden="true"></canvas>
-  <div class="hero-glow" aria-hidden="true"></div>
-
-  <div class="hero-inner">
-    <p class="hero-eyebrow">
-      <span class="sr-only">Engineering Student · Paris</span><span id="typed" aria-hidden="true" data-roles='["Engineering Student · Paris","M1 Applied Maths · Paris-Saclay","Analyst Intern @ AUREA","Systematic strategies · Python"]'>Engineering Student · Paris</span><span class="caret" aria-hidden="true"></span>
-    </p>
-    <h1>
-      <span class="line"><span>Tom Mallay</span></span>
-      <span class="line"><span><em>Quantitative Finance &amp; Engineering</em></span></span>
-    </h1>
-    <p class="hero-bio">
-      Engineering student at ENSIIE with a double degree in Mathematics at Paris-Saclay University
-      (L3 Mathematics, M1 Applied Mathematics). Exchange semester at the Università degli Studi di Firenze
-      focused on quantitative finance. Currently Analyst Intern at AUREA Wealth Management.
-      Passionate about trading, blockchain technology and data-driven methods applied to finance.
-    </p>
-
-    <div class="hero-cta">
-      <a class="btn primary" href="#projects">View projects <span class="arrow down" aria-hidden="true">↓</span></a>
-      <a class="btn" href="https://github.com/teaum" target="_blank" rel="noopener">GitHub <span class="arrow out" aria-hidden="true">↗</span></a>
-      <a class="btn" href="#contact">Get in touch <span class="arrow" aria-hidden="true">→</span></a>
+  <div class="cover">
+    <div class="cover-top">
+      <span><span class="accent">Portfolio</span> · 2026</span>
+      <span><span class="live" aria-hidden="true"></span>Paris <span id="clock"></span></span>
     </div>
 
-    <div class="hero-stats">
-      <div>
-        <div class="stat-num"><span class="count" data-to="8">8</span></div>
-        <div class="stat-label">ETFs in my cross-asset trend index</div>
+    <div class="cover-text">
+      <p class="hero-eyebrow">
+        <span class="sr-only">Engineering Student · Paris</span><span id="typed" aria-hidden="true" data-roles='["Engineering Student · Paris","M1 Applied Maths · Paris-Saclay","Analyst Intern @ AUREA","Systematic strategies · Python"]'>Engineering Student · Paris</span><span class="caret" aria-hidden="true"></span>
+      </p>
+      <h1 aria-label="Tom Mallay">
+        <span class="line" aria-hidden="true"><span>Tom</span></span>
+        <span class="line" aria-hidden="true"><span>Mallay</span></span>
+      </h1>
+      <p class="cover-sub"><em>Quantitative Finance</em> &amp; Engineering</p>
+      <p class="cover-lede">Engineering student at ENSIIE and Université Paris-Saclay, building systematic strategies in Python.</p>
+
+      <div class="hero-cta">
+        <a class="btn primary" href="#projects">View projects <span class="arrow down" aria-hidden="true">↓</span></a>
+        <a class="btn" href="https://github.com/teaum" target="_blank" rel="noopener">GitHub <span class="arrow out" aria-hidden="true">↗</span></a>
+        <a class="btn" href="#contact">Get in touch <span class="arrow" aria-hidden="true">→</span></a>
       </div>
-      <div>
-        <div class="stat-num"><span class="count" data-to="3.4" data-dec="1">3.4</span><span class="unit">%</span></div>
-        <div class="stat-label">median covariance error, HJM calibration</div>
+    </div>
+
+    <figure class="cover-plot" role="img" aria-label="Animated Monte Carlo simulation of geometric Brownian motion price paths, with quantile bands and the distribution of terminal prices">
+      <div class="plot-head" aria-hidden="true">
+        <span class="title">Monte Carlo · GBM</span>
+        <span id="mcParams">&nbsp;</span>
       </div>
-      <div>
-        <div class="stat-num"><span class="count" data-to="16">16</span></div>
-        <div class="stat-label">ESG PAI indicators automated</div>
+      <div class="plot-canvas"><canvas id="paths" aria-hidden="true"></canvas></div>
+      <div class="plot-foot" aria-hidden="true">
+        <span>E[S<sub>T</sub>]<b id="mcMean">—</b></span>
+        <span>P(S<sub>T</sub> &gt; S<sub>0</sub>)<b id="mcUp">—</b></span>
+        <span>VaR<sub>95%</sub><b id="mcVar">—</b></span>
       </div>
+    </figure>
+
+    <div class="cover-bottom">
+      <span>ENSIIE <span class="accent">·</span> Université Paris-Saclay</span>
+      <a class="cover-scroll" href="#about">Scroll <span class="track" aria-hidden="true"></span></a>
     </div>
   </div>
-
-  <div class="scroll-cue" aria-hidden="true"></div>
 </header>
 
 <div class="ticker" aria-hidden="true">
@@ -974,6 +1086,16 @@
 </div>
 
 <main class="container">
+
+  <section id="about">
+    <p class="section-label"><span class="idx">00</span>About</p>
+    <p class="about-lede">Engineering student at ENSIIE with a double degree in Mathematics at Université Paris-Saclay, working where <em>mathematics meets markets</em>.</p>
+    <p class="about-body">
+      L3 Mathematics and M1 Applied Mathematics at Paris-Saclay. Exchange semester at the Università degli Studi di Firenze
+      focused on quantitative finance. Currently Analyst Intern at AUREA Wealth Management.
+      Passionate about trading, blockchain technology and data-driven methods applied to finance.
+    </p>
+  </section>
 
   <section id="projects">
     <p class="section-label"><span class="idx">01</span>Projects</p>
@@ -1252,13 +1374,49 @@
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-  /* 1. Hero background: simulated GBM price paths (Monte Carlo fan) */
+  /* 0. Cover name: split into letters so they can rise one by one */
+  const h1 = $('.hero h1');
+  if (h1) {
+    let n = 0;
+    $$('.line > span', h1).forEach((sp) => {
+      const txt = sp.textContent;
+      sp.textContent = '';
+      for (const c of txt) {
+        const s = document.createElement('span');
+        s.className = 'ch';
+        s.textContent = c;
+        s.style.setProperty('--i', n++);
+        sp.appendChild(s);
+      }
+    });
+    h1.classList.add('split');
+  }
+
+  /* Paris clock in the cover head */
+  const clock = $('#clock');
+  if (clock && window.Intl) {
+    const fmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit' });
+    const upd = () => { clock.textContent = '— ' + fmt.format(new Date()); };
+    upd();
+    setInterval(upd, 15000);
+  }
+
+  /* 1. Cover: Monte Carlo simulation of GBM paths, quantile bands and terminal distribution */
   const hero = $('.hero');
   const cvs = $('#paths');
   if (cvs && cvs.getContext) {
     const ctx = cvs.getContext('2d');
-    const DRAW = 3800, HOLD = 2800, FADE = 900;
-    let W = 0, H = 0, paths = [], t0 = 0, raf = 0, running = false, onScreen = true;
+    const layer = document.createElement('canvas');
+    const lctx = layer.getContext('2d');
+    const GOLD = '200,169,110', TEAL = '90,150,133';
+    const LO = Math.log(0.55), HI = Math.log(2.05);     // fixed log-price axis, S0 = 100
+    const LEVELS = [60, 80, 100, 125, 160, 200];
+    const DRAW = 2600, LAG = 650, SETTLE = 1300, HOLD = 6500, FADE = 900;
+    const out = { mean: $('#mcMean'), up: $('#mcUp'), vr: $('#mcVar'), params: $('#mcParams') };
+    const clamp = (v) => Math.min(1, Math.max(0, v));
+    const easeOut = (p) => 1 - Math.pow(1 - p, 3);
+    const easeInOut = (p) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
+    let W = 0, H = 0, sim = null, t0 = 0, el = 0, raf = 0, running = false, onScreen = true, firstRun = true;
 
     const gauss = () => {
       let u = 0, v = 0;
@@ -1267,113 +1425,324 @@
       return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
     };
 
-    function build() {
-      const n = W < 640 ? 10 : 18;
-      const steps = Math.max(60, Math.round(W / 5));
-      paths = Array.from({ length: n }, (_, i) => {
-        const mu = (Math.random() - 0.35) * 0.5;
-        const sig = 0.16 + Math.random() * 0.24;
-        const dt = 1 / steps;
-        let s = 0;
-        const pts = [0];
-        for (let k = 0; k < steps; k++) {
-          s += (mu - sig * sig / 2) * dt + sig * Math.sqrt(dt) * gauss();
-          pts.push(s);
-        }
-        return { pts, hi: i === 0, green: i % 3 === 1, lag: Math.random() * 0.25 };
-      });
-      t0 = performance.now();
+    function simulate() {
+      const small = W < 560;
+      const N = small ? 90 : 170, steps = small ? 110 : 170;
+      const mu = 0.03 + Math.random() * 0.06, sig = 0.15 + Math.random() * 0.1;
+      const dt = 1 / steps, drift = (mu - sig * sig / 2) * dt, vol = sig * Math.sqrt(dt);
+      const paths = [];
+      for (let i = 0; i < N; i++) {
+        const p = new Float32Array(steps + 1);
+        for (let k = 1; k <= steps; k++) p[k] = p[k - 1] + drift + vol * gauss();
+        paths.push(p);
+      }
+      const order = paths.map((_, i) => i).sort((a, b) => paths[a][steps] - paths[b][steps]);
+
+      // Per-step quantiles (5, 25, 50, 75, 95)
+      const qs = [0.05, 0.25, 0.5, 0.75, 0.95];
+      const Q = qs.map(() => new Float32Array(steps + 1));
+      const col = new Float32Array(N);
+      for (let k = 0; k <= steps; k++) {
+        for (let i = 0; i < N; i++) col[i] = paths[i][k];
+        col.sort();
+        qs.forEach((q, j) => { Q[j][k] = col[Math.round(q * (N - 1))]; });
+      }
+
+      // Terminal distribution
+      const B = small ? 26 : 36, bw = (HI - LO) / B, bins = new Array(B).fill(0);
+      let sum = 0, up = 0;
+      for (const p of paths) {
+        const x = p[steps];
+        sum += 100 * Math.exp(x);
+        if (x > 0) up++;
+        const b = Math.floor((x - LO) / bw);
+        if (b >= 0 && b < B) bins[b]++;
+      }
+      const maxBin = Math.max(...bins, 1);
+      const m = mu - sig * sig / 2;
+      const intro = firstRun ? 950 : 350;
+
+      return {
+        N, steps, mu, sig, m, paths, Q, B, bw, bins, maxBin,
+        hi: order[Math.floor(N * 0.72)],
+        lag: paths.map(() => Math.random() * LAG),
+        up: paths.map((p) => p[steps] > 0),
+        drawn: new Int32Array(N),
+        stats: { mean: sum / N, up: 100 * up / N, var95: 100 * (1 - Math.exp(Q[0][steps])) },
+        intro, end: intro + DRAW + LAG + SETTLE + HOLD,
+        reported: false,
+      };
+    }
+
+    let G = null;
+    function geo() {
+      const hw = Math.max(54, Math.min(128, W * 0.17));
+      const x0 = 30, y0 = 6, y1 = H - 22;
+      const x1 = W - hw - 16;
+      G = {
+        x0, x1, y0, y1, hx: x1 + 10, hw: hw - 2,
+        X: (k) => x0 + (k / sim.steps) * (x1 - x0),
+        Y: (v) => y1 - ((v - LO) / (HI - LO)) * (y1 - y0),
+      };
+    }
+
+    function resetLayer() {
+      lctx.restore();                       // drop the previous clip (no-op on a fresh canvas)
+      lctx.setTransform(1, 0, 0, 1, 0, 0);
+      lctx.clearRect(0, 0, layer.width, layer.height);
+      const dpr = layer.width / Math.max(1, W);
+      lctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      lctx.save();
+      lctx.beginPath();
+      lctx.rect(G.x0, G.y0, G.x1 - G.x0, G.y1 - G.y0);
+      lctx.clip();
+      lctx.lineWidth = 0.75;
+      lctx.lineJoin = 'round';
+      if (sim) sim.drawn.fill(0);
+    }
+
+    function tween(node, from, to, fmt) {
+      if (!node) return;
+      const t = performance.now();
+      const step = (now) => {
+        const p = Math.min(1, (now - t) / 1000), e = 1 - Math.pow(1 - p, 4);
+        node.textContent = fmt(from + (to - from) * e);
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+    let shown = { mean: 100, up: 50, var95: 0 };
+    function report(instant) {
+      const s = sim.stats;
+      const f = { mean: (v) => v.toFixed(1), up: (v) => Math.round(v) + '%', var95: (v) => '−' + v.toFixed(1) + '%' };
+      if (instant) {
+        out.mean.textContent = f.mean(s.mean); out.up.textContent = f.up(s.up); out.vr.textContent = f.var95(s.var95);
+      } else {
+        tween(out.mean, shown.mean, s.mean, f.mean);
+        tween(out.up, shown.up, s.up, f.up);
+        tween(out.vr, shown.var95, s.var95, f.var95);
+      }
+      shown = { ...s };
     }
 
     function draw(el) {
-      const x0 = W * 0.06, y0 = H * 0.58, ky = H * 0.75;
+      const s = sim, g = G, n = s.steps;
+      const fade = el > s.end ? clamp(1 - (el - s.end) / FADE) : 1;
+      const introP = s.intro > 400 ? easeInOut(clamp((el - 250) / (s.intro - 250))) : 1;
+      const tDraw = el - s.intro;
+      const settleP = easeOut(clamp((tDraw - DRAW - LAG * 0.5) / SETTLE));
+      const histP = clamp((tDraw - DRAW * 0.7 - LAG) / (SETTLE + 400));
+
       ctx.clearRect(0, 0, W, H);
-      ctx.globalAlpha = el > DRAW + HOLD ? Math.max(0, 1 - (el - DRAW - HOLD) / FADE) : 1;
+      ctx.font = '10px "DM Mono", ui-monospace, monospace';
+      ctx.textBaseline = 'middle';
+
+      // Grid: log-price levels, time ticks
+      ctx.globalAlpha = introP;
+      ctx.setLineDash([1, 5]);
+      ctx.lineWidth = 1;
+      for (const L of LEVELS) {
+        const y = Math.round(g.Y(Math.log(L / 100))) + 0.5;
+        ctx.fillStyle = L === 100 ? 'rgba(200,169,110,0.8)' : 'rgba(138,134,128,0.55)';
+        ctx.textAlign = 'left';
+        ctx.fillText(String(L), 0, y);
+        if (L === 100) continue;
+        ctx.strokeStyle = 'rgba(232,228,220,0.07)';
+        ctx.beginPath(); ctx.moveTo(g.x0, y); ctx.lineTo(g.x1, y); ctx.stroke();
+      }
+      const ticks = ['0', '3M', '6M', '9M', '1Y'];
+      ctx.textAlign = 'center';
+      ctx.fillStyle = 'rgba(138,134,128,0.55)';
+      ticks.forEach((tk, i) => {
+        const x = Math.round(g.x0 + (i / 4) * (g.x1 - g.x0)) + 0.5;
+        ctx.fillText(tk, Math.min(x, g.x1 - 8), g.y1 + 13);
+        if (i === 4) {
+          ctx.strokeStyle = 'rgba(232,228,220,0.12)';
+          ctx.beginPath(); ctx.moveTo(x, g.y0); ctx.lineTo(x, g.y1); ctx.stroke();
+        }
+      });
+      ctx.textAlign = 'left';
+      ctx.fillText('P(Sₜ)', g.hx, g.y1 + 13);
+      ctx.setLineDash([]);
+
+      // S0 baseline draws first, from left to right
+      const yb = Math.round(g.Y(0)) + 0.5;
+      ctx.strokeStyle = 'rgba(200,169,110,0.45)';
+      ctx.beginPath(); ctx.moveTo(g.x0, yb); ctx.lineTo(g.x0 + (W - g.x0) * introP, yb); ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      // Paths: drawn incrementally onto an offscreen layer
+      for (let i = 0; i < s.N; i++) {
+        const p = s.paths[i];
+        const upto = Math.floor(easeOut(clamp((tDraw - s.lag[i]) / DRAW)) * n);
+        const from = s.drawn[i];
+        if (upto <= from) continue;
+        lctx.strokeStyle = `rgba(${s.up[i] ? GOLD : TEAL},0.2)`;
+        lctx.beginPath();
+        lctx.moveTo(g.X(from), g.Y(p[from]));
+        for (let k = from + 1; k <= upto; k++) lctx.lineTo(g.X(k), g.Y(p[k]));
+        lctx.stroke();
+        s.drawn[i] = upto;
+      }
+      ctx.globalAlpha = fade * (1 - 0.5 * settleP);
+      ctx.drawImage(layer, 0, 0, W, H);
+
+      // Sparkle at the heads of a few paths while they are drawing
+      ctx.fillStyle = 'rgba(236,213,163,0.8)';
+      for (let i = 0; i < s.N; i += 7) {
+        const k = s.drawn[i];
+        if (k <= 0 || k >= n) continue;
+        ctx.beginPath(); ctx.arc(g.X(k), g.Y(s.paths[i][k]), 1.3, 0, Math.PI * 2); ctx.fill();
+      }
 
       ctx.save();
-      ctx.setLineDash([2, 7]);
-      ctx.strokeStyle = 'rgba(232,228,220,0.08)';
-      ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(W, y0); ctx.stroke();
-      ctx.restore();
+      ctx.beginPath(); ctx.rect(g.x0, g.y0, g.x1 - g.x0 + 1, g.y1 - g.y0); ctx.clip();
 
-      for (const p of paths) {
-        const n = p.pts.length - 1;
-        const prog = Math.min(1, Math.max(0, (el / DRAW - p.lag) / (1 - p.lag)));
-        const upto = Math.floor((1 - Math.pow(1 - prog, 3)) * n);
-        if (upto < 1) continue;
-        const dx = (W - x0) / n;
-
+      // Quantile bands sweep in once the paths have landed
+      if (settleP > 0) {
+        const K = Math.max(1, Math.round(settleP * n));
+        const band = (a, b, alpha) => {
+          ctx.beginPath();
+          for (let k = 0; k <= K; k++) ctx.lineTo(g.X(k), g.Y(s.Q[b][k]));
+          for (let k = K; k >= 0; k--) ctx.lineTo(g.X(k), g.Y(s.Q[a][k]));
+          ctx.closePath();
+          ctx.fillStyle = `rgba(${GOLD},${alpha})`;
+          ctx.fill();
+        };
+        ctx.globalAlpha = fade;
+        band(0, 4, 0.07);
+        band(1, 3, 0.1);
+        ctx.setLineDash([4, 4]);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'rgba(232,228,220,0.6)';
         ctx.beginPath();
-        for (let k = 0; k <= upto; k++) {
-          const x = x0 + k * dx, y = y0 - p.pts[k] * ky;
-          k ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
-        }
-        if (p.hi) {
-          ctx.strokeStyle = 'rgba(200,169,110,0.95)';
-          ctx.lineWidth = 2;
-          ctx.shadowColor = 'rgba(200,169,110,0.55)';
-          ctx.shadowBlur = 12;
-        } else {
-          ctx.strokeStyle = p.green ? 'rgba(90,150,133,0.6)' : 'rgba(200,169,110,0.34)';
-          ctx.lineWidth = 1.1;
-          ctx.shadowBlur = 0;
-        }
+        for (let k = 0; k <= K; k++) ctx.lineTo(g.X(k), g.Y(s.Q[2][k]));
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // Highlighted sample path
+      const hp = s.paths[s.hi];
+      const hk = Math.floor(easeOut(clamp(tDraw / DRAW)) * n);
+      ctx.globalAlpha = fade;
+      if (hk > 0) {
+        ctx.beginPath();
+        for (let k = 0; k <= hk; k++) ctx.lineTo(g.X(k), g.Y(hp[k]));
+        ctx.strokeStyle = 'rgba(236,213,163,0.95)';
+        ctx.lineWidth = 1.6;
+        ctx.shadowColor = 'rgba(200,169,110,0.7)';
+        ctx.shadowBlur = 10;
         ctx.stroke();
         ctx.shadowBlur = 0;
+      }
+      ctx.restore();
 
-        if (prog < 1 || p.hi) {
-          const x = x0 + upto * dx, y = y0 - p.pts[upto] * ky;
+      if (hk > 0) {
+        const x = g.X(hk), y = g.Y(hp[hk]);
+        const pulse = (el % 1800) / 1800;
+        ctx.globalAlpha = fade * (1 - pulse) * 0.6;
+        ctx.strokeStyle = 'rgba(236,213,163,1)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.arc(x, y, 3 + pulse * 9, 0, Math.PI * 2); ctx.stroke();
+        ctx.globalAlpha = fade;
+        ctx.fillStyle = '#ecd5a3';
+        ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
+        const label = 'S = ' + (100 * Math.exp(hp[hk])).toFixed(1);
+        ctx.font = '10px "DM Mono", ui-monospace, monospace';
+        const lw = ctx.measureText(label).width;
+        const lx = x + 10 + lw > g.x1 ? x - 10 - lw : x + 10;
+        ctx.fillStyle = 'rgba(236,213,163,0.95)';
+        ctx.textAlign = 'left';
+        ctx.fillText(label, lx, Math.max(g.y0 + 6, Math.min(g.y1 - 6, y - 12)));
+      }
+
+      // Terminal distribution: histogram + theoretical lognormal density
+      if (histP > 0) {
+        const c = (s.B - 1) / 2;
+        for (let b = 0; b < s.B; b++) {
+          if (!s.bins[b]) continue;
+          const d = (Math.abs(b - c) / c) * 0.4;
+          const lb = easeOut(clamp((histP - d) / 0.6));
+          const vTop = LO + (b + 1) * s.bw, vBot = LO + b * s.bw;
+          const yT = g.Y(vTop), yB = g.Y(vBot);
+          ctx.globalAlpha = fade;
+          ctx.fillStyle = `rgba(${vBot + s.bw / 2 > 0 ? GOLD : TEAL},0.55)`;
+          ctx.fillRect(g.hx, yT + 0.5, (s.bins[b] / s.maxBin) * g.hw * lb, Math.max(1, yB - yT - 1.5));
+        }
+        const dp = easeOut(clamp((histP - 0.55) / 0.45));
+        if (dp > 0) {
+          ctx.globalAlpha = fade * dp;
+          ctx.strokeStyle = 'rgba(236,213,163,0.85)';
+          ctx.lineWidth = 1;
           ctx.beginPath();
-          ctx.arc(x, y, p.hi ? 3 : 1.6, 0, Math.PI * 2);
-          ctx.fillStyle = p.hi ? '#ecd5a3' : 'rgba(200,169,110,0.6)';
-          ctx.fill();
+          for (let j = 0; j <= 90; j++) {
+            const v = LO + (j / 90) * (HI - LO);
+            const f = Math.exp(-((v - s.m) ** 2) / (2 * s.sig * s.sig)) / (s.sig * Math.sqrt(2 * Math.PI));
+            const x = g.hx + Math.min(1.12, (s.N * s.bw * f) / s.maxBin) * g.hw;
+            ctx.lineTo(x, g.Y(v));
+          }
+          ctx.stroke();
         }
       }
       ctx.globalAlpha = 1;
+
+      if (!s.reported && tDraw > DRAW + LAG) { s.reported = true; report(false); }
+    }
+
+    function newSim() {
+      sim = simulate();
+      firstRun = false;
+      if (out.params) {
+        out.params.textContent = `N = ${sim.N} · μ = ${(sim.mu * 100).toFixed(1)}% · σ = ${(sim.sig * 100).toFixed(1)}%`;
+      }
     }
 
     function frame(now) {
-      let el = now - t0;
-      if (el > DRAW + HOLD + FADE) { build(); t0 = now; el = 0; }
+      el = now - t0;
+      if (el > sim.end + FADE) { newSim(); geo(); resetLayer(); t0 = now; el = 0; }
       draw(el);
       raf = running ? requestAnimationFrame(frame) : 0;
     }
-
     function start() {
-      if (reduce || running || !onScreen || document.hidden) return;
+      if (reduce || running || !onScreen || document.hidden || !sim) return;
       running = true;
+      t0 = performance.now() - el;
       raf = requestAnimationFrame(frame);
     }
     function stop() { running = false; cancelAnimationFrame(raf); raf = 0; }
+
+    function staticFrame() {
+      const at = sim.intro + DRAW + LAG + SETTLE + 400;
+      sim.reported = true;
+      draw(at);
+      report(true);
+    }
 
     let lastW = -1;
     function resize() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       W = cvs.clientWidth; H = cvs.clientHeight;
-      cvs.width = Math.round(W * dpr); cvs.height = Math.round(H * dpr);
+      if (!W || !H) return;
+      cvs.width = layer.width = Math.round(W * dpr);
+      cvs.height = layer.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      if (W !== lastW) { lastW = W; build(); }
-      if (reduce) draw(DRAW);
+      if (!sim || (W < 560) !== (lastW < 560)) { if (reduce) firstRun = false; newSim(); el = 0; t0 = performance.now(); }
+      lastW = W;
+      geo();
+      resetLayer();
+      if (reduce) staticFrame();
+      else if (!running) draw(el);
     }
 
     resize();
     start();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (reduce && sim) { resetLayer(); staticFrame(); } });
     let rt;
     window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(resize, 150); });
     document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; onScreen ? start() : stop(); }).observe(hero);
     }
-  }
-
-  /* Hero spotlight follows the cursor */
-  if (hero && finePointer && !reduce) {
-    hero.addEventListener('pointermove', (e) => {
-      const r = hero.getBoundingClientRect();
-      hero.style.setProperty('--hx', (e.clientX - r.left) + 'px');
-      hero.style.setProperty('--hy', (e.clientY - r.top) + 'px');
-    });
   }
 
   /* 2. Typed eyebrow */
@@ -1390,29 +1759,12 @@
       else { i += del ? -1 : 1; }
       setTimeout(tick, d);
     };
-    setTimeout(tick, 1200);
-  }
-
-  /* 3. Count-up stats */
-  const counters = $$('.count');
-  const countUp = (el) => {
-    const to = parseFloat(el.dataset.to), dec = +(el.dataset.dec || 0), dur = 1700;
-    const t = performance.now();
-    const step = (now) => {
-      const p = Math.min(1, (now - t) / dur), e = 1 - Math.pow(1 - p, 4);
-      el.textContent = (to * e).toFixed(dec);
-      if (p < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  };
-  if (!reduce) {
-    counters.forEach((el) => { el.textContent = (0).toFixed(+(el.dataset.dec || 0)); });
-    setTimeout(() => counters.forEach(countUp), 800);
+    setTimeout(tick, 2600);
   }
 
   /* 4. Scroll reveal */
   $$('.skills-chips').forEach((g) => Array.from(g.children).forEach((c, i) => c.style.setProperty('--i', i)));
-  const targets = $$('.section-label, .project-item, .exp-item, .edu-item, .skills-group, .interest-item, .contact-title, .contact-mail');
+  const targets = $$('.section-label, .about-lede, .about-body, .project-item, .exp-item, .edu-item, .skills-group, .interest-item, .contact-title, .contact-mail');
   targets.forEach((t) => t.classList.add('reveal'));
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
