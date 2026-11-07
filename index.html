@@ -1108,7 +1108,7 @@
     requestAnimationFrame(ready);
   }
 
-  /* 4. Etched Monte Carlo fan behind the hero: drawn once, revealed by a CSS wipe */
+  /* 4. Implied volatility surface behind the hero: drawn once, revealed by a CSS wipe */
   var canvas = $('#etch');
   if (canvas && canvas.getContext) {
     var ctx = canvas.getContext('2d');
@@ -1124,50 +1124,89 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
 
-      /* Deterministic generator so the etching is identical on every visit */
-      var seed = 20260917;
-      var rand = function () {
-        seed = (seed + 0x6D2B79F5) | 0;
-        var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      /* Implied volatility surface sigma(k, T): equity skew, smile curvature
+         decaying with maturity, inverted term structure. Hidden-line wireframe. */
+      var NK = W < 600 ? 22 : 34, NT = W < 600 ? 12 : 18;
+      var KMIN = -0.5, KMAX = 0.5, TMIN = 0.08, TMAX = 2;
+      var vol = function (k, T) {
+        var atm = 0.165 + 0.075 * Math.exp(-2.2 * T);
+        var skew = -0.12 / Math.sqrt(T + 0.1);
+        var curv = 0.2 / (T + 0.3);
+        return atm + skew * k + curv * k * k;
       };
-      var gauss = function () {
-        var u = 1 - rand(), v = rand();
-        return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+      var VLO = 0.12, VHI = 0.56;
+
+      var yaw = 0.3, pitch = 0.35, D = 5.2;
+      var cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+      var mob = W < 600;
+      var S = mob ? W * 0.34 : Math.min(W * 0.3, H * 0.34);
+      var OX = W * (mob ? 0.44 : 0.52), OY = H * (mob ? 0.68 : 0.75);
+      var proj = function (k, T) {
+        var X = (k - KMIN) / (KMAX - KMIN) * 2 - 1;
+        var Y = (T - TMIN) / (TMAX - TMIN) * 2 - 1;
+        var h = (vol(k, T) - VLO) / (VHI - VLO);
+        var Z = h * 1.0;
+        var xr = X * cy - Y * sy;
+        var yr = X * sy + Y * cy;
+        var depth = yr * cp - Z * sp;
+        var up = Z * cp + yr * sp;
+        var f = D / (D + depth);
+        return { x: OX + xr * S * f, y: OY - up * S * f, d: depth, h: h };
       };
 
-      var N = W < 600 ? 44 : 72, STEPS = 240;
-      var mu = 0.06, sigma = 0.22, T = 1, dt = T / STEPS;
-      var x0 = W * 0.18, x1 = W * 0.98;
-      var y0 = H * 0.66, span = H * 0.36;
-      var LO = Math.log(0.55), HI = Math.log(1.9);
-      var yOf = function (lx) { return y0 - (lx / (HI - LO)) * span * 2.2; };
+      var pts = [];
+      for (var j = 0; j < NT; j++) {
+        var row = [];
+        var T = TMIN + (TMAX - TMIN) * j / (NT - 1);
+        for (var i = 0; i < NK; i++) row.push(proj(KMIN + (KMAX - KMIN) * i / (NK - 1), T));
+        pts.push(row);
+      }
 
-      var drawPath = function (alpha, width, color) {
-        var lx = 0;
-        ctx.beginPath();
-        ctx.moveTo(x0, yOf(0));
-        for (var s = 1; s <= STEPS; s++) {
-          lx += (mu - 0.5 * sigma * sigma) * dt + sigma * Math.sqrt(dt) * gauss();
-          ctx.lineTo(x0 + (x1 - x0) * s / STEPS, yOf(lx));
+      var quads = [];
+      for (j = 0; j < NT - 1; j++) {
+        for (i = 0; i < NK - 1; i++) {
+          var q = [pts[j][i], pts[j][i + 1], pts[j + 1][i + 1], pts[j + 1][i]];
+          quads.push({ q: q, d: (q[0].d + q[1].d + q[2].d + q[3].d) / 4, h: (q[0].h + q[1].h + q[2].h + q[3].h) / 4 });
         }
-        ctx.strokeStyle = color || 'rgba(236,232,225,' + alpha + ')';
+      }
+      quads.sort(function (a, b) { return b.d - a.d; });
+
+      ctx.lineJoin = 'round';
+      ctx.lineWidth = 0.7;
+      quads.forEach(function (o) {
+        var q = o.q, t = Math.min(1, Math.max(0, o.h));
+        ctx.beginPath();
+        ctx.moveTo(q[0].x, q[0].y);
+        ctx.lineTo(q[1].x, q[1].y);
+        ctx.lineTo(q[2].x, q[2].y);
+        ctx.lineTo(q[3].x, q[3].y);
+        ctx.closePath();
+        ctx.fillStyle = 'rgb(' + Math.round(12 + 14 * t) + ',' + Math.round(12 + 20 * t) + ',' + Math.round(11 + 34 * t) + ')';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(236,232,225,' + (0.1 + 0.16 * t).toFixed(3) + ')';
+        ctx.stroke();
+      });
+
+      /* ATM term structure and the front smile in the accent colour */
+      var line = function (arr, alpha, width) {
+        ctx.beginPath();
+        arr.forEach(function (pt, n) { n ? ctx.lineTo(pt.x, pt.y) : ctx.moveTo(pt.x, pt.y); });
+        ctx.strokeStyle = 'rgba(122,162,255,' + alpha + ')';
         ctx.lineWidth = width;
         ctx.stroke();
       };
+      var atmCol = [];
+      for (j = 0; j < NT; j++) atmCol.push(proj(0, TMIN + (TMAX - TMIN) * j / (NT - 1)));
+      line(pts[0], 0.9, 1.2);
+      line(atmCol, 0.55, 1);
 
-      ctx.lineJoin = 'round';
-      for (var p = 0; p < N; p++) drawPath(0.075, 0.7);
-      drawPath(0, 1.1, 'rgba(122,162,255,0.85)');
-
-      /* Origin hairline */
-      ctx.beginPath();
-      ctx.moveTo(x0, yOf(0) + 0.5);
-      ctx.lineTo(x1, yOf(0) + 0.5);
-      ctx.strokeStyle = 'rgba(236,232,225,0.06)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
+      /* Axis labels */
+      ctx.font = '400 10px "Geist Mono", ui-monospace, monospace';
+      ctx.fillStyle = 'rgba(236,232,225,0.38)';
+      var lab = function (pt, txt, dx, dy) { ctx.fillText(txt, pt.x + dx, pt.y + dy); };
+      lab(pts[0][0], 'K/S₀ 60%', -40, 20);
+      lab(pts[0][NK - 1], '140%', -10, 20);
+      lab(pts[NT - 1][NK - 1], 'T 2Y', 10, 4);
     };
     draw();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { lastW = 0; draw(); });
