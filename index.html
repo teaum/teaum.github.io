@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#0c0c0b">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Geist:wght@200;300;400;500&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
   <script>
     (function () {
       var d = document.documentElement;
@@ -35,7 +35,7 @@
       --line-2: rgba(236, 232, 225, 0.2);
 
       --serif: 'Cormorant Garamond', 'Times New Roman', serif;
-      --display: 'Bodoni Moda', 'Didot', 'Bodoni 72', serif;
+      --display: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
       --sans: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
       --mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', monospace;
 
@@ -81,10 +81,10 @@
 
     /* Small caps label used across the page */
     .label {
-      font-family: var(--sans);
+      font-family: var(--mono);
       font-size: 0.66rem;
       font-weight: 400;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--muted);
     }
@@ -118,10 +118,10 @@
     .intro-kicker { margin-bottom: 2.2rem; animation: fade 1.2s ease 0.35s both; }
     .intro-name {
       font-family: var(--display);
-      font-weight: 400;
-      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-weight: 300;
+      font-size: clamp(2.6rem, 7.5vw, 5.4rem);
       line-height: 1;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.055em;
       white-space: nowrap;
     }
     .intro-name .ch {
@@ -142,11 +142,11 @@
       animation: drawX 1.2s var(--ease-in-out) 0.85s forwards;
     }
     .intro-sub {
-      font-family: var(--display);
-      font-style: italic;
+      font-family: var(--mono);
       font-weight: 400;
-      font-size: clamp(0.95rem, 1.7vw, 1.15rem);
-      letter-spacing: 0.01em;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
       color: var(--text-2);
       animation: fadeUp 1.2s var(--ease-out) 1.05s both;
     }
@@ -195,9 +195,9 @@
 
     .nav-logo {
       font-family: var(--display);
-      font-size: 1.1rem;
-      font-weight: 400;
-      letter-spacing: 0.01em;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
       text-decoration: none;
       opacity: 0;
       transform: translateY(4px);
@@ -280,10 +280,10 @@
     }
     .hero-name {
       font-family: var(--display);
-      font-weight: 400;
-      font-size: clamp(3.2rem, 14.6vw, 11.5rem);
-      line-height: 0.9;
-      letter-spacing: -0.035em;
+      font-weight: 200;
+      font-size: clamp(3.2rem, 15vw, 12rem);
+      line-height: 0.88;
+      letter-spacing: -0.065em;
       white-space: nowrap;
       margin-left: -0.05em;
     }
@@ -291,12 +291,13 @@
     .hero-sub {
       margin-top: 2.2rem;
       font-family: var(--display);
-      font-weight: 400;
+      font-weight: 300;
       font-size: clamp(1.15rem, 2.2vw, 1.75rem);
       line-height: 1.2;
-      color: var(--text-2);
+      letter-spacing: -0.02em;
+      color: var(--muted);
     }
-    .hero-sub em { font-style: italic; color: var(--text); }
+    .hero-sub em { font-style: normal; color: var(--text); }
 
     .hero-facts {
       position: relative;
