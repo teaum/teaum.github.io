@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#0c0c0b">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Geist:wght@300;400;500&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
   <script>
     (function () {
       var d = document.documentElement;
@@ -35,6 +35,7 @@
       --line-2: rgba(236, 232, 225, 0.2);
 
       --serif: 'Cormorant Garamond', 'Times New Roman', serif;
+      --display: 'Bodoni Moda', 'Didot', 'Bodoni 72', serif;
       --sans: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
       --mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', monospace;
 
@@ -116,11 +117,11 @@
 
     .intro-kicker { margin-bottom: 2.2rem; animation: fade 1.2s ease 0.35s both; }
     .intro-name {
-      font-family: var(--serif);
-      font-weight: 300;
-      font-size: clamp(2.9rem, 8vw, 5.6rem);
+      font-family: var(--display);
+      font-weight: 400;
+      font-size: clamp(2.5rem, 7vw, 5rem);
       line-height: 1;
-      letter-spacing: 0.01em;
+      letter-spacing: -0.01em;
       white-space: nowrap;
     }
     .intro-name .ch {
@@ -141,10 +142,11 @@
       animation: drawX 1.2s var(--ease-in-out) 0.85s forwards;
     }
     .intro-sub {
-      font-family: var(--serif);
+      font-family: var(--display);
       font-style: italic;
-      font-weight: 300;
-      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      font-weight: 400;
+      font-size: clamp(0.95rem, 1.7vw, 1.15rem);
+      letter-spacing: 0.01em;
       color: var(--text-2);
       animation: fadeUp 1.2s var(--ease-out) 1.05s both;
     }
@@ -192,8 +194,8 @@
     .js.ready nav { opacity: 1; transition: opacity 1s ease 1.1s; }
 
     .nav-logo {
-      font-family: var(--serif);
-      font-size: 1.25rem;
+      font-family: var(--display);
+      font-size: 1.1rem;
       font-weight: 400;
       letter-spacing: 0.01em;
       text-decoration: none;
@@ -277,20 +279,20 @@
       padding: 3rem 0;
     }
     .hero-name {
-      font-family: var(--serif);
-      font-weight: 300;
-      font-size: clamp(4rem, 18.5vw, 13.5rem);
-      line-height: 0.88;
-      letter-spacing: -0.025em;
+      font-family: var(--display);
+      font-weight: 400;
+      font-size: clamp(3.2rem, 14.6vw, 11.5rem);
+      line-height: 0.9;
+      letter-spacing: -0.035em;
       white-space: nowrap;
       margin-left: -0.05em;
     }
     .hero-name .ch { display: inline-block; }
     .hero-sub {
       margin-top: 2.2rem;
-      font-family: var(--serif);
-      font-weight: 300;
-      font-size: clamp(1.35rem, 2.6vw, 2.1rem);
+      font-family: var(--display);
+      font-weight: 400;
+      font-size: clamp(1.15rem, 2.2vw, 1.75rem);
       line-height: 1.2;
       color: var(--text-2);
     }
